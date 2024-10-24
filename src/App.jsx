@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
 import { Container, Form, Button, Spinner, Card, Col, Row } from 'react-bootstrap';
-import { SearchForm } from './searchForm';
-import { ShowWeatherCards } from './ShowWeatherCards';
 import { HistoricalWeather } from './HistoricalWeather';
+
+
 
 
 export default function App(){
@@ -12,25 +12,16 @@ const [weatherData, setWeatherData] = useState(null)
 const [historicalWeather, setHistoricalWeather] = useState(null)
 const [loading, setLoading] = useState(null)
 const [weatherTwoYearsAgo, setWeatherTwoYearsAgo] = useState(null);
+const API_KEY = import.meta.env.VITE_API_KEY;
 
-const dateYearsAgo = (years) => {
-  const date = new Date();
-  const year = date.getFullYear()-years;
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
-  const day = String(date.getDate()).padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
-};
-
-const today = dateYearsAgo(0);
-const lastYear = dateYearsAgo(1);
-const twoYearsAgo = dateYearsAgo(2);
 
 async function FetchWeatherData(city){
+
   try {
-    const CurrentUrl = `https://api.weatherstack.com/current?access_key=b9ca95d0ff78adf60954e46b4b9584f1&query=${city}`;
-    const historicalUrl = `https://api.weatherstack.com/historical?access_key=b9ca95d0ff78adf60954e46b4b9584f1&query=${city}&historical_date=${lastYear}&hourly=1`
-    const TwoYearUrl = `https://api.weatherstack.com/historical?access_key=b9ca95d0ff78adf60954e46b4b9584f1&query=${city}&historical_date=${twoYearsAgo}&hourly=1`
+    const CurrentUrl = `https://api.weatherstack.com/current?access_key=${API_KEY}&query=${city}`;
+    const historicalUrl = `https://api.weatherstack.com/historical?access_key=${API_KEY}&query=${city}&historical_date=${lastYear}&hourly=1`
+    const TwoYearUrl = `https://api.weatherstack.com/historical?access_key=${API_KEY}&query=${city}&historical_date=${twoYearsAgo}&hourly=1`
 
     setLoading(true);
     const response = await fetch(CurrentUrl);
@@ -56,6 +47,21 @@ async function FetchWeatherData(city){
     setLoading(false);
   }
 }
+
+const dateYearsAgo = (years) => {
+  const date = new Date();
+  const year = date.getFullYear()-years;
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+const today = dateYearsAgo(0);
+const lastYear = dateYearsAgo(1);
+const twoYearsAgo = dateYearsAgo(2);
+
+
 
 useEffect(() => {
   FetchWeatherData(city);
