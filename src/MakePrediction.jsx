@@ -55,6 +55,11 @@ export function MakePrediction({city, setCity}){
 
       return(
         <Container className="d-flex flex-column align-items-center">
+            <div>The weatherstack api only provided 250 api calls of current weather data for free.</div>
+            <div>I was able to get normal plan by messaging their customer service but even that did not have forecast,</div>
+            <div>so this forecast is calculated based on previous 5 years of history data of THAT SINGLE DAY</div>
+            <div>and EXTREMELY unreliable. However, idea of this project was not to be good weather app, it was to</div>
+            <div>create working web app.</div>
             {loading ? (
             <Spinner animation="border" />
         ) : (
