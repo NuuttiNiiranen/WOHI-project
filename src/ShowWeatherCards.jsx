@@ -11,8 +11,10 @@ export function ShowWeatherCards({city, yearsToFetch}) {
   async function getData() {
     const data = [];
     for (const year of yearsToFetch){
+      if (city !== "" && year) {
       console.log("We got here, year: ", year)
       const newData = await FetchWeatherData({ city, yearsToFetch: year });
+      }
       data.push(newData);
     }
     setWeatherData(data)
