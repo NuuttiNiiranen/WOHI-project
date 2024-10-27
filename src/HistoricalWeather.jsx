@@ -1,22 +1,11 @@
 import { useState } from "react";
 import { SearchForm } from "./searchForm";
 import { ShowWeatherCards } from "./ShowWeatherCards";
+import { DateYearsAgo } from "./DateYearsAgo";
 
-
-export function HistoricalWeather(){
-    const [city, setCity] = useState("Kuopio")
-
-
-    const dateYearsAgo = (yearsAgo) => {
-        const date = new Date();
-        const year = date.getFullYear() - yearsAgo;
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
-        const day = String(date.getDate()).padStart(2, '0');
-      
-        return `${year}-${month}-${day}`;
-      }
+export function HistoricalWeather({city, setCity}){
     
-    const yearsToFetch=[dateYearsAgo(0), dateYearsAgo(1), dateYearsAgo(2), dateYearsAgo(3)]
+    const yearsToFetch=[DateYearsAgo(0), DateYearsAgo(1), DateYearsAgo(2), DateYearsAgo(3), DateYearsAgo(4)]
 
     return(<>
         <SearchForm city={city} setCity={setCity}/>

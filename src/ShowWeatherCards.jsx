@@ -52,7 +52,7 @@ export function ShowWeatherCards({ city, yearsToFetch }) {
                         <Card.Title>{data?.location?.name || "Unknown Location"}</Card.Title>
                         <Card.Text>
                           Date: {yearData?.date || "N/A"} <br />
-                          Temperature: {yearData?.avgtemp || "N/A"}Â°C <br />
+                          Temperature: {yearData?.avgtemp || "N/A"}°C <br />
                         </Card.Text>
                       </Card.Body>
                     </Card>
