@@ -1,6 +1,7 @@
 import { Button, Form } from "react-bootstrap";
+import FetchWeatherData from "./FetchWeatherData";
 
-export function SearchForm({FetchWeatherData, city, setCity}){
+export function SearchForm({city, setCity}){
     const handleSubmit = (e) => {
         e.preventDefault();
         FetchWeatherData(city)
