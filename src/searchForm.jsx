@@ -1,9 +1,12 @@
 import { Button, Form } from "react-bootstrap";
 import FetchWeatherData from "./FetchWeatherData";
+import { useState } from "react";
 
 export function SearchForm({city, setCity}){
-    const handleSubmit = (e) => {
+  const [tempCity, setTempCity] = useState('');  
+  const handleSubmit = (e) => {
         e.preventDefault();
+        setCity(tempCity)
         FetchWeatherData(city)
       }
 
@@ -14,8 +17,8 @@ export function SearchForm({city, setCity}){
         <Form.Control
           type="text"
           placeholder="enter city name like 'Kuopio'"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          value={tempCity}
+          onChange={(e) => setTempCity(e.target.value)}
           className="me-2"
         />
         <Button variant="primary" type="submit">
