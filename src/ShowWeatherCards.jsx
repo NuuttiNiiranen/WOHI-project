@@ -1,52 +1,69 @@
-import { Card, Row, Spinner } from "react-bootstrap";
+import { Card, Row, Spinner, Alert } from "react-bootstrap";
 import FetchWeatherData from "./FetchWeatherData";
 import { useEffect, useState } from "react";
 
-
-
-export function ShowWeatherCards({city, yearsToFetch}) {
-  const [weatherData, setWeatherData] = useState([])
-  const [loading, setLoading] = useState(true)
+export function ShowWeatherCards({ city, yearsToFetch }) {
+  const [weatherData, setWeatherData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   async function getData() {
-    const data = [];
-    for (const year of yearsToFetch){
-      if (city !== "" && year) {
-      console.log("We got here, year: ", year)
-      const newData = await FetchWeatherData({ city, yearsToFetch: year });
+    try {
+      setLoading(true);
+      const data = [];
+      for (const year of yearsToFetch) {
+        if (city !== "" && year) {
+          const newData = await FetchWeatherData({ city, yearsToFetch: year });
+          data.push(newData);
+        }
       }
-      data.push(newData);
+      setWeatherData(data);
+    } catch (err) {
+      setError("Failed to fetch weather data. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setWeatherData(data)
-    setLoading(false)
   }
 
-  useEffect(()=>{
-    getData()
-  }, [city])
+  useEffect(() => {
+    if (city) {
+      getData();
+    }
+  }, [city]);
 
-    return(<>
+  return (
+      <>
         {loading ? (
             <Spinner animation="border" />
-          ) : ( 
+        ) : error ? (
+            <Alert variant="danger">{error}</Alert>
+        ) : (
             <Row>
-                {weatherData.map((data, index) => {
-                    return (
-                        <Card key={index} style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={data?.historical[yearsToFetch[index]]?.hourly?.[5]?.weather_icons?.[0]} />
-                            <Card.Body>
-                                <Card.Title>{data?.location?.name}</Card.Title>
-                                <Card.Text>
-                                    Date: {data?.historical[yearsToFetch[index]]?.date} <br />
-                                    Temperature: {data?.historical[yearsToFetch[index]]?.avgtemp}°C <br />
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    )
-                })}
+              {weatherData.map((data, index) => {
+                const yearData = data?.historical?.[yearsToFetch[index]];
+                return yearData ? (
+                    <Card key={index} style={{ width: '18rem' }}>
+                      <Card.Img
+                          variant="top"
+                          src={yearData?.hourly?.[5]?.weather_icons?.[0] || ""}
+                          alt="Weather Icon"
+                      />
+                      <Card.Body>
+                        <Card.Title>{data?.location?.name || "Unknown Location"}</Card.Title>
+                        <Card.Text>
+                          Date: {yearData?.date || "N/A"} <br />
+                          Temperature: {yearData?.avgtemp || "N/A"}Â°C <br />
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                ) : (
+                    <Alert key={index} variant="warning">
+                      Weather data for {yearsToFetch[index]} is unavailable.
+                    </Alert>
+                );
+              })}
             </Row>
-          )
-        }
+        )}
       </>
-  )
+  );
 }

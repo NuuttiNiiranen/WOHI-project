@@ -3,7 +3,7 @@ import FetchWeatherData from "./FetchWeatherData";
 import { useState } from "react";
 
 export function SearchForm({city, setCity}){
-  const [tempCity, setTempCity] = useState('');  
+  const [tempCity, setTempCity] = useState('Kuopio');  
   const handleSubmit = (e) => {
         e.preventDefault();
         setCity(tempCity)
