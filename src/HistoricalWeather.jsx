@@ -2,7 +2,9 @@ import { SearchForm } from "./searchForm";
 import { ShowWeatherCards } from "./ShowWeatherCards";
 
 
-export function HistoricalWeather({city, setCity}){
+export function HistoricalWeather(){
+    const [city, setCity] = useState("Kuopio")
+
 
     const dateYearsAgo = (yearsAgo) => {
         const date = new Date();
